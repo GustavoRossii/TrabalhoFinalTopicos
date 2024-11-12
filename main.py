@@ -1,12 +1,12 @@
 from processar_csv import ProcessarCSV
-from treinar_modelo import modeloML
+from treinar_modelo import ModeloML
 from flask import Flask, render_template, request
 import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(32)
 
-@app.route('/')
+@app.route('/menu')
 def menu():
     return render_template('menu.html')
 
