@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Carregar arquivo CSV</title>
+</head>
+<body>
+    <h1>Coloque sua dataset</h1>
+    <form method="POST" action="/upload" enctype="multipart/form-data">
+        <label for="arquivoCSV">Escolha o arquivo csv</label>
+        <input type="file" id="arquivoCSV" name="csvFile" accept=".csv">
+        <button type="submit">Enviar</button>
+    </form>
+</body>
+</html>
