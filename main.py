@@ -9,6 +9,9 @@ app.config['SECRET_KEY'] = os.urandom(32)
 @app.route('/menu')
 def menu():
     return render_template('menu.html')
+@app.route('/')
+def index():
+    return redirect(url_for('menu'))
 
 @app.route('/upload', methods=['POST'])
 def upload():
