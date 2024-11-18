@@ -90,7 +90,7 @@
                 linear-gradient(45deg, transparent 75%, #f1f3f5 75%),
                 linear-gradient(-45deg, transparent 75%, #f1f3f5 75%);
             background-size: 20px 20px;
-            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px;
             opacity: 0.3;
             z-index: 0;
         }
@@ -192,7 +192,7 @@
             <p>Carregue seu arquivo CSV e descubra insights valiosos.</p>
             <form method="POST" action="/upload" enctype="multipart/form-data">
                 <div class="file-upload-wrapper">
-                    <input type="file" id="arquivoCSV" name="csvFile" accept=".csv" class="file-upload-input" onchange="updateFileName(this)" required>
+                    <input type="file" id="arquivoCSV" name="arquivoCSV" accept=".csv" class="file-upload-input" onchange="updateFileName(this)" required>
                 </div>
                 <div id="file-name"></div>
                 <button type="submit">Iniciar Análise</button>
