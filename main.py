@@ -37,7 +37,27 @@ def upload():
 
         return df.head(5).to_html()
 
+@app.route('/treinar', methods=['POST'])
+def treinar():
+    if 'arquivoCSV' not in request.files:
+        return redirect(request.url)
 
+    arquivo = request.files['arquivoCSV']
+
+    if arquivo.filename == '':
+        return redirect(request.url)
+
+    if arquivo:
+        path_arquivo = os.path.join(app.config['UPLOAD_FOLDER'], arquivo.filename)
+        arquivo.save(path_arquivo)
+
+        processador_CSV = ProcessarCSV(path_arquivo)
+        df = processador_CSV.ler_csv()
+
+        modelo = ModeloML(df)
+        modelo.treinar_modelo()
+
+        return 'Modelo treinado com sucesso!'
 
 if __name__ == '__main__':
     app.run(debug=True)
