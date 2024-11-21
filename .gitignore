@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+
+# arquivos os
+Thumbs.db
+desktop.ini
+
+# Ide
+.ideia/
+
+# Arquivos gerados pela aplicação
+uploads/
