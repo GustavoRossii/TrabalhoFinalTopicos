@@ -1,6 +1,7 @@
 from processar_csv import ProcessarCSV
 from treinar_modelo import ModeloML
-from flask import Flask, render_template, request, url_for, redirect
+from analise_dados import AnalisarDados
+from flask import Flask, render_template, request, url_for, redirect, session
 import os
 
 app = Flask(__name__)
@@ -33,31 +34,39 @@ def upload():
 
         processador_CSV = ProcessarCSV(path_arquivo)
         df = processador_CSV.ler_csv()
-
+        session['csv_path'] = path_arquivo
 
         return df.head(5).to_html()
 
 @app.route('/treinar', methods=['POST'])
 def treinar():
-    if 'arquivoCSV' not in request.files:
-        return redirect(request.url)
+    if 'csv_path' not in session:
+        return redirect(url_for('menu'))
 
-    arquivo = request.files['arquivoCSV']
 
-    if arquivo.filename == '':
-        return redirect(request.url)
+    path_arquivo = session['csv_path']
+    processador_CSV = ProcessarCSV(path_arquivo)
+    df = processador_CSV.ler_csv()
 
-    if arquivo:
-        path_arquivo = os.path.join(app.config['UPLOAD_FOLDER'], arquivo.filename)
-        arquivo.save(path_arquivo)
+    modelo = ModeloML(df)
+    modelo.treinar_modelo(df)
 
-        processador_CSV = ProcessarCSV(path_arquivo)
-        df = processador_CSV.ler_csv()
+    return 'Modelo treinado com sucesso!'
 
-        modelo = ModeloML(df)
-        modelo.treinar_modelo()
 
-        return 'Modelo treinado com sucesso!'
+@app.route("/analisar", methods=['POST'])
+def analisar():
+    if 'csv_path' not in session:
+        return redirect(url_for('menu'))
+
+    path_arquivo = session['csv_path']
+    processador_CSV = ProcessarCSV(path_arquivo)
+    df = processador_CSV.ler_csv()
+
+    analisador = AnalisarDados(df)
+    path_figuras = analisador.plotar_graficos(df)
+
+    return render_template('analise.html', path_figuras=path_figuras)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -4,17 +4,17 @@ import joblib
 
 
 class ModeloML:
-    def __init__(self, df):
-        self.df = df
+    def __init__(self):
+        self.modelo = None
 
-    def treinar_modelo(self, df, x, y):
+    def treinar_modelo(self, x, y):
 
         X_train, X_test, Y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
 
-        modelo = xgb.XGBClassifier(use_label_encoder=False, eval_metric='mlogloss')
+        self.modelo = xgb.XGBClassifier(use_label_encoder=False, eval_metric='mlogloss')
 
-        modelo.fit(X_train, Y_train)
+        self.modelo.fit(X_train, Y_train)
 
-        joblib.dump(modelo, 'modelo.pkl')
+        joblib.dump(self.modelo, 'modelo.pkl')
 
-        return modelo
+        return self.modelo
