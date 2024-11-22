@@ -4,10 +4,15 @@ import joblib
 
 
 class ModeloML:
-    def __init__(self):
+    def __init__(self, df):
         self.modelo = None
+        self.df = df
+
 
     def treinar_modelo(self, x, y):
+
+        X = x.drop(columns=['User ID', 'Screen On Time (hours/day)'], axis=1)
+        Y = y
 
         X_train, X_test, Y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
 
@@ -18,3 +23,7 @@ class ModeloML:
         joblib.dump(self.modelo, 'modelo.pkl')
 
         return self.modelo
+
+    def prever_modelo(self, x):
+        self.modelo = joblib.load('modelo.pkl')
+        return self.modelo.predict(x)

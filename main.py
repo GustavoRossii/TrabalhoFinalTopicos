@@ -1,3 +1,5 @@
+import pandas as pd
+
 from processar_csv import ProcessarCSV
 from treinar_modelo import ModeloML
 from analise_dados import AnalisarDados
@@ -45,23 +47,52 @@ def upload():
         except Exception as e:
             return render_template('upload.html', message='Erro ao processar arquivo: {}'.format(e))
 
-@app.route('/treinar', methods=['GET', 'POST'])
 def treinar():
-    if  request.method == 'GET':
-        return render_template('treinar.html')
-
-    if 'csv_path' not in session:
-        return redirect(url_for('treinar'))
-
-
     path_arquivo = session['csv_path']
     processador_CSV = ProcessarCSV(path_arquivo)
     df = processador_CSV.ler_csv()
 
     modelo = ModeloML(df)
-    modelo.treinar_modelo(df)
+    modelo.treinar_modelo(df, df['Screen On Time (hours/day)'])
 
     return 'Modelo treinado com sucesso!'
+
+@app.route("/prever", metheds=['GET', 'POST'])
+def prever():
+    if request.method == 'GET':
+        return render_template('prever.html')
+
+    if 'csv_path' not in session:
+        return redirect(url_for('menu'))
+
+    modelo = request.form['modelo']
+    sistema_operacional = request.form['sistema_operacional']
+    tempo_app = int(request.form['uso_app'])
+    tempo_tela = float(request.form['tempo_tela'])
+    drenagem_bateria = int(request.form['drenagem_bateria'])
+    num_apps = int(request.form['num_apps'])
+    dados_usados = int(request.form['dados_usados'])
+    idade = int(request.form['idade'])
+    genero = request.form['genero']
+
+    dados = {
+        'Device Model': [modelo],
+        'Operating System': [sistema_operacional],
+        'App usage(min/day)': [tempo_app],
+        'Screen On Time (/day)': [tempo_tela],
+        'Battery Drain (mAh/day)': [drenagem_bateria],
+        'Number of Apps Installed': [num_apps],
+        'Data Usage (MB/day)': [dados_usados],
+        'Age': [idade],
+        'Gender' : [genero]
+    }
+
+    df = pd.DataFrame(dados)
+
+    modelo_ml = ModeloML(df)
+    previsao = modelo_ml.prever_modelo(df)
+
+    return render_template('treinar.html', previsao=previsao)
 
 @app.route('/static/<path:filename>')
 def serve_static(filename):
@@ -85,4 +116,5 @@ def analisar():
     return render_template('analise.html', path_figura=path_figura)
 
 if __name__ == '__main__':
+    treinar()
     app.run(debug=True)
