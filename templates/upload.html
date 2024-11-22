@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Análise de Dados</title>
+    <title>Carregar Arquivo</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
+        /* CSS geral compartilhado */
         :root {
             --primary-color: #3a4750;
             --secondary-color: #00a8cc;
@@ -41,29 +42,46 @@
             padding: 2rem;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            text-align: center;
         }
-        img {
+        .file-upload-wrapper {
+            margin: 2rem 0;
+        }
+        .file-upload-input {
             width: 100%;
-            max-width: 600px;
-            margin: 1rem 0;
-            border-radius: 10px;
+            padding: 1rem;
+            border: 2px solid var(--secondary-color);
+            border-radius: 5px;
+        }
+        button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: var(--accent-color);
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Análise de Dados</h1>
+        <h1>Carregar Arquivo CSV</h1>
     </header>
     <nav>
         <a href="/menu">Menu</a>
-        <a href="/upload">Carregar Arquivo</a>
+        <a href="/analisar">Análise de Dados</a>
         <a href="/treinar">Treinamento de Modelo</a>
     </nav>
     <div class="container">
-        <h2>Visualização dos Gráficos</h2>
-        <p>Veja abaixo os gráficos gerados a partir dos dados analisados:</p>
-        <img src="/static/grafico.png" alt="Gráfico Exemplo">
+        <h2>Faça o upload do seu arquivo CSV</h2>
+        <form method="POST" action="/upload" enctype="multipart/form-data">
+            <div class="file-upload-wrapper">
+                <input type="file" name="arquivoCSV" class="file-upload-input" accept=".csv" required>
+            </div>
+            <button type="submit">Enviar Arquivo</button>
+        </form>
     </div>
 </body>
 </html>

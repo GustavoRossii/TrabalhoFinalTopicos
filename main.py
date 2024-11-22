@@ -18,15 +18,20 @@ def menu():
 def index():
     return redirect(url_for('menu'))
 
-@app.route('/upload', methods=['POST'])
+@app.route('/upload', methods=['GET', 'POST'])
 def upload():
+
+    if request.method == 'GET':
+        return render_template('upload.html')
+
     if 'arquivoCSV' not in request.files:
-        return redirect(request.url)
+        return redirect(url_for('upload'))
 
     arquivo = request.files['arquivoCSV']
 
     if arquivo.filename == '':
-        return redirect(request.url)
+
+        return redirect(url_for('upload'))
 
     if arquivo:
         path_arquivo = os.path.join(app.config['UPLOAD_FOLDER'], arquivo.filename)
@@ -36,12 +41,15 @@ def upload():
         df = processador_CSV.ler_csv()
         session['csv_path'] = path_arquivo
 
-        return df.head(5).to_html()
+        return render_template('upload.html', df=df)
 
-@app.route('/treinar', methods=['POST'])
+@app.route('/treinar', methods=['GET', 'POST'])
 def treinar():
+    if  request.method == 'GET':
+        return render_template('treinar.html')
+
     if 'csv_path' not in session:
-        return redirect(url_for('menu'))
+        return redirect(url_for('treinar'))
 
 
     path_arquivo = session['csv_path']
@@ -54,8 +62,13 @@ def treinar():
     return 'Modelo treinado com sucesso!'
 
 
-@app.route("/analisar", methods=['POST'])
+@app.route("/analisar", methods=['GET', 'POST'])
 def analisar():
+
+    if request.method == 'GET':
+        return render_template('analise.html')
+
+
     if 'csv_path' not in session:
         return redirect(url_for('menu'))
 

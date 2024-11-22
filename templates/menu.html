@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DataFlow</title>
+    <title>Menu Principal</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <style>
         :root {
             --primary-color: #3a4750;
@@ -14,202 +13,81 @@
             --background-color: #f4f4f4;
             --text-color: #333333;
         }
-        * {
+        body, html {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-        body, html {
             font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
             color: var(--text-color);
             height: 100%;
-            line-height: 1.6;
+        }
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+        }
+        nav {
+            text-align: center;
+            background-color: var(--secondary-color);
+            padding: 1rem 0;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 1rem;
+            transition: color 0.3s ease;
+        }
+        nav a:hover {
+            color: var(--accent-color);
         }
         .container {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            min-height: 100vh;
-        }
-        .left-panel {
-            background: linear-gradient(135deg, #3a4750 0%, #2c3e50 100%);
-            padding: 4rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .logo {
-            font-size: 2rem;
-            font-weight: 600;
-            color: #ffffff;
-            margin-bottom: 2rem;
-        }
-        .tagline {
-            font-size: 2.5rem;
-            color: #ffffff;
-            line-height: 1.2;
-            margin-bottom: 2rem;
-        }
-        .features {
-            color: #cccccc;
-        }
-        .features h3 {
-            color: var(--secondary-color);
-            margin-bottom: 1rem;
-        }
-        .features ul {
-            list-style-type: none;
-        }
-        .features li {
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-        }
-        .features li i {
-            margin-right: 10px;
-            color: var(--secondary-color);
-        }
-        .right-panel {
-            background: linear-gradient(135deg, #f6f9fc 0%, #e9ecef 100%);
-            padding: 4rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            position: relative;
-            overflow: hidden;
+            align-items: center;
+            height: calc(100vh - 150px); /* Subtrai o tamanho do header e do nav */
+            text-align: center;
         }
-        .right-panel::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image:
-                linear-gradient(45deg, #f1f3f5 25%, transparent 25%),
-                linear-gradient(-45deg, #f1f3f5 25%, transparent 25%),
-                linear-gradient(45deg, transparent 75%, #f1f3f5 75%),
-                linear-gradient(-45deg, transparent 75%, #f1f3f5 75%);
-            background-size: 20px 20px;
-            background-position: 0 0, 0 10px, 10px -10px, -10px;
-            opacity: 0.3;
-            z-index: 0;
+        .menu-option {
+            margin: 1rem 0;
         }
-        .right-panel > * {
-            position: relative;
-            z-index: 1;
-        }
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-            color: var(--primary-color);
-        }
-        p {
-            margin-bottom: 2rem;
-            font-size: 1.1rem;
-            color: var(--text-color);
-            max-width: 600px;
-        }
-        .file-upload-wrapper {
-            margin-bottom: 2rem;
-            width: 100%;
-            max-width: 600px;
-        }
-        .file-upload-input {
-            width: 100%;
-            padding: 1.5rem;
-            font-size: 1.1rem;
-            color: var(--text-color);
-            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
-            border: 2px solid var(--secondary-color);
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .file-upload-input:hover {
-            background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-        }
-        #file-name {
-            margin-top: 0.5rem;
-            font-size: 0.9rem;
-            color: var(--secondary-color);
-        }
-        button {
-            background: linear-gradient(135deg, var(--secondary-color) 0%, #0088a9 100%);
-            color: #ffffff;
-            border: none;
+        .menu-option a {
+            display: inline-block;
             padding: 1rem 2rem;
-            font-size: 1.1rem;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
+            background: var(--secondary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: background 0.3s ease;
         }
-        button:hover {
-            background: linear-gradient(135deg, #0088a9 0%, var(--secondary-color) 100%);
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-            transform: translateY(-2px);
-        }
-        .decorative-line {
-            width: 50px;
-            height: 4px;
-            background-color: var(--secondary-color);
-            margin: 2rem 0;
-        }
-        @media (max-width: 1024px) {
-            .container {
-                grid-template-columns: 1fr;
-            }
-            .left-panel, .right-panel {
-                padding: 3rem;
-            }
+        .menu-option a:hover {
+            background: var(--accent-color);
         }
     </style>
 </head>
 <body>
+    <header>
+        <h1>DataFlow - Menu Principal</h1>
+    </header>
+    <nav>
+        <a href="/upload">Carregar Arquivo</a>
+        <a href="/analisar">Análise de Dados</a>
+        <a href="/treinar">Treinamento</a>
+    </nav>
     <div class="container">
-        <div class="left-panel">
-            <div>
-                <div class="logo">DataFlow</div>
-                <h2 class="tagline">Transforme seus dados em insights poderosos</h2>
-            </div>
-            <div class="features">
-                <h3>Recursos</h3>
-                <ul>
-                    <li><i class="fas fa-chart-line"></i> Análise avançada de dados</li>
-                    <li><i class="fas fa-chart-pie"></i> Visualizações interativas</li>
-                    <li><i class="fas fa-file-alt"></i> Relatórios personalizados</li>
-                    <li><i class="fas fa-plug"></i> Integração com múltiplas fontes</li>
-                </ul>
-            </div>
+        <div class="menu-option">
+            <a href="/upload">Carregar Arquivo</a>
         </div>
-        <div class="right-panel">
-            <h1>Comece sua análise</h1>
-            <div class="decorative-line"></div>
-            <p>Carregue seu arquivo CSV e descubra insights valiosos.</p>
-            <form method="POST" action="/upload" enctype="multipart/form-data">
-                <div class="file-upload-wrapper">
-                    <input type="file" id="arquivoCSV" name="arquivoCSV" accept=".csv" class="file-upload-input" onchange="updateFileName(this)" required>
-                </div>
-                <div id="file-name"></div>
-                <button type="submit">Iniciar Análise</button>
-            </form>
+        <div class="menu-option">
+            <a href="/analisar">Análise de Dados</a>
+        </div>
+        <div class="menu-option">
+            <a href="/treinar">Treinamento de Modelo</a>
         </div>
     </div>
-
-    <script>
-        function updateFileName(input) {
-            const fileName = input.files[0]?.name;
-            const fileNameElement = document.getElementById('file-name');
-            if (fileName) {
-                fileNameElement.textContent = `Arquivo selecionado: ${fileName}`;
-            } else {
-                fileNameElement.textContent = '';
-            }
-        }
-    </script>
 </body>
 </html>

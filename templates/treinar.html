@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treinar Modelo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3a4750;
+            --secondary-color: #00a8cc;
+            --accent-color: #ff6b6b;
+            --background-color: #f4f4f4;
+            --text-color: #333333;
+        }
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+        header, nav {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 1rem;
+        }
+        nav a:hover {
+            color: var(--accent-color);
+        }
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        table th, table td {
+            padding: 1rem;
+            border: 1px solid var(--secondary-color);
+            text-align: center;
+        }
+        table th {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--secondary-color);
+            border-radius: 5px;
+        }
+        button {
+            margin-top: 1rem;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Treinar Modelo</h1>
+    </header>
+    <nav>
+        <a href="/menu">Menu</a>
+        <a href="/upload">Carregar Arquivo</a>
+        <a href="/analisar">Análise de Dados</a>
+    </nav>
+    <div class="container">
+        <h2>Selecione os parâmetros para o treinamento</h2>
+        <form method="POST" action="/treinar">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Atributo</th>
+                        <th>Selecionar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Coluna X</td>
+                        <td><select name="coluna_x">
+                            <option value="coluna1">Coluna 1</option>
+                            <option value="coluna2">Coluna 2</option>
+                        </select></td>
+                    </tr>
+                    <tr>
+                        <td>Coluna Y</td>
+                        <td><select name="coluna_y">
+                            <option value="coluna1">Coluna 1</option>
+                            <option value="coluna2">Coluna 2</option>
+                        </select></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="submit">Iniciar Treinamento</button>
+        </form>
+    </div>
+</body>
+</html>
