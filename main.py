@@ -1,5 +1,4 @@
 import pandas as pd
-
 from processar_csv import ProcessarCSV
 from treinar_modelo import ModeloML
 from analise_dados import AnalisarDados
@@ -16,13 +15,13 @@ if not os.path.exists(app.config['UPLOAD_FOLDER']):
 @app.route('/menu')
 def menu():
     return render_template('menu.html')
+
 @app.route('/')
 def index():
     return redirect(url_for('menu'))
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
-
     if request.method == 'GET':
         return render_template('upload.html')
 
@@ -47,7 +46,8 @@ def upload():
         except Exception as e:
             return render_template('upload.html', message='Erro ao processar arquivo: {}'.format(e))
 
-def treinar():
+@app.route('/treinar', methods=['GET'])
+def treinar_route():
     path_arquivo = session['csv_path']
     processador_CSV = ProcessarCSV(path_arquivo)
     df = processador_CSV.ler_csv()
@@ -57,7 +57,7 @@ def treinar():
 
     return 'Modelo treinado com sucesso!'
 
-@app.route("/prever", metheds=['GET', 'POST'])
+@app.route("/prever", methods=['GET', 'POST'])
 def prever():
     if request.method == 'GET':
         return render_template('prever.html')
@@ -100,21 +100,28 @@ def serve_static(filename):
 
 @app.route("/analisar", methods=['GET', 'POST'])
 def analisar():
+    print("Rota /analisar chamada")
     if request.method == 'GET':
+        print("Método GET")
         return render_template('analise.html')
 
-    if 'csv_path' not in session:
-        return redirect(url_for('menu'))
+    if request.method == 'POST':
+        print("Método POST")
+        if 'csv_path' not in session:
+            print("csv_path não encontrado na sessão")
+            return redirect(url_for('menu'))
 
-    path_arquivo = session['csv_path']
-    processador_CSV = ProcessarCSV(path_arquivo)
-    df = processador_CSV.ler_csv()
+        path_arquivo = session['csv_path']
+        print(f"Path do arquivo CSV: {path_arquivo}")
+        processador_CSV = ProcessarCSV(path_arquivo)
+        df = processador_CSV.ler_csv()
+        print("DataFrame carregado:\n", df.head())
 
-    analisador = AnalisarDados(df)
-    path_figura = analisador.plotar_graficos()
+        analisador = AnalisarDados(df)
+        path_figures = analisador.plotar_graficos()
+        print(f"Paths dos gráficos: {path_figures}")
 
-    return render_template('analise.html', path_figura=path_figura)
+        return render_template('analise.html', path_figures=path_figures)
 
 if __name__ == '__main__':
-    treinar()
     app.run(debug=True)

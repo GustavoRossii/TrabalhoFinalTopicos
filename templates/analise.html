@@ -63,8 +63,13 @@
     <div class="container">
         <h2>Visualização dos Gráficos</h2>
         <p>Veja abaixo os gráficos gerados a partir dos dados analisados:</p>
-        {% if path_figura %}
-            <img src="{{ url_for('static', filename=graficos/graficoSB.png) }}" alt="Gráfico de Análise">
+        <form method="POST" action="/analisar">
+            <button type="submit">Gerar Gráficos</button>
+        </form>
+        {% if path_figures %}
+            {% for path_figure in path_figures %}
+                <img src="{{ url_for('static', filename=path_figure) }}" alt="Gráfico de Análise">
+            {% endfor %}
         {% else %}
             <p>Não há gráficos para exibir.</p>
         {% endif %}
