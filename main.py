@@ -1,7 +1,7 @@
 from processar_csv import ProcessarCSV
 from treinar_modelo import ModeloML
 from analise_dados import AnalisarDados
-from flask import Flask, render_template, request, url_for, redirect, session
+from flask import Flask, render_template, request, url_for, redirect, session, send_from_directory
 import os
 
 app = Flask(__name__)
@@ -30,18 +30,20 @@ def upload():
     arquivo = request.files['arquivoCSV']
 
     if arquivo.filename == '':
-
         return redirect(url_for('upload'))
 
     if arquivo:
-        path_arquivo = os.path.join(app.config['UPLOAD_FOLDER'], arquivo.filename)
-        arquivo.save(path_arquivo)
+        try:
+            path_arquivo = os.path.join(app.config['UPLOAD_FOLDER'], arquivo.filename)
+            arquivo.save(path_arquivo)
 
-        processador_CSV = ProcessarCSV(path_arquivo)
-        df = processador_CSV.ler_csv()
-        session['csv_path'] = path_arquivo
+            processador_CSV = ProcessarCSV(path_arquivo)
+            df = processador_CSV.ler_csv()
+            session['csv_path'] = path_arquivo
 
-        return render_template('upload.html', df=df)
+            return render_template('upload.html', df=df, message='Arquivo processado com sucesso!')
+        except Exception as e:
+            return render_template('upload.html', message='Erro ao processar arquivo: {}'.format(e))
 
 @app.route('/treinar', methods=['GET', 'POST'])
 def treinar():
@@ -61,13 +63,14 @@ def treinar():
 
     return 'Modelo treinado com sucesso!'
 
+@app.route('/static/<path:filename>')
+def serve_static(filename):
+    return send_from_directory('static', filename)
 
 @app.route("/analisar", methods=['GET', 'POST'])
 def analisar():
-
     if request.method == 'GET':
         return render_template('analise.html')
-
 
     if 'csv_path' not in session:
         return redirect(url_for('menu'))
@@ -77,9 +80,9 @@ def analisar():
     df = processador_CSV.ler_csv()
 
     analisador = AnalisarDados(df)
-    path_figuras = analisador.plotar_graficos(df)
+    path_figura = analisador.plotar_graficos()
 
-    return render_template('analise.html', path_figuras=path_figuras)
+    return render_template('analise.html', path_figura=path_figura)
 
 if __name__ == '__main__':
     app.run(debug=True)

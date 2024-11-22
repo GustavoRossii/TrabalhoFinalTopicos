@@ -82,6 +82,9 @@
             </div>
             <button type="submit">Enviar Arquivo</button>
         </form>
+        {% if message %}
+            <p>{{ message }}</p>
+        {% endif %}
     </div>
 </body>
 </html>

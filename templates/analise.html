@@ -63,7 +63,11 @@
     <div class="container">
         <h2>Visualização dos Gráficos</h2>
         <p>Veja abaixo os gráficos gerados a partir dos dados analisados:</p>
-        <img src="/static/grafico.png" alt="Gráfico Exemplo">
+        {% if path_figura %}
+            <img src="{{ url_for('static', filename=graficos/graficoSB.png) }}" alt="Gráfico de Análise">
+        {% else %}
+            <p>Não há gráficos para exibir.</p>
+        {% endif %}
     </div>
 </body>
 </html>
