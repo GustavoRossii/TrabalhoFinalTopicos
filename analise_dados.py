@@ -31,21 +31,6 @@ class AnalisarDados:
             print(f"Gráfico 1 salvo em: {file_path1}")
             graficos_paths.append('graficos/grafico1.png')
 
-            # Verifique se a coluna 'App usage (min/day)' existe no DataFrame
-            if 'App usage (min/day)' in self.df.columns:
-                # Gerar segundo gráfico
-                print("Iniciando a geração do gráfico 2...")
-                sns.boxplot(x='Operating System', y='App usage (min/day)', data=self.df)
-                plt.title("Uso de aplicativos x Sistema operacional")
-                plt.xlabel("Sistema operacional")
-                plt.ylabel("Uso de aplicativos (min/dia)")
-                file_path2 = os.path.join(static_dir, 'grafico2.png')
-                plt.savefig(file_path2, format='png')
-                plt.close()
-                print(f"Gráfico 2 salvo em: {file_path2}")
-                graficos_paths.append('graficos/grafico2.png')
-            else:
-                print("Coluna 'App usage (min/day)' não encontrada no DataFrame")
 
             # Gerar terceiro gráfico
             print("Iniciando a geração do gráfico 3...")
