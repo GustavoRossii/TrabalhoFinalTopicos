@@ -3,91 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu Principal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>DataFlow - Menu Principal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
-            --primary-color: #3a4750;
-            --secondary-color: #00a8cc;
-            --accent-color: #ff6b6b;
-            --background-color: #f4f4f4;
-            --text-color: #333333;
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --background-color: #ecf0f1;
+            --text-color: #34495e;
+            --card-bg: #ffffff;
         }
         body, html {
             margin: 0;
             padding: 0;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Montserrat', sans-serif;
             background-color: var(--background-color);
             color: var(--text-color);
             height: 100%;
         }
-        header {
+        .dashboard {
+            display: flex;
+            height: 100vh;
+        }
+        .sidebar {
+            width: 250px;
             background-color: var(--primary-color);
             color: white;
-            text-align: center;
-            padding: 1rem 0;
+            padding: 2rem;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
         }
-        nav {
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
             text-align: center;
-            background-color: var(--secondary-color);
-            padding: 1rem 0;
         }
-        nav a {
+        .nav-item {
+            margin-bottom: 1rem;
+        }
+        .nav-item a {
             color: white;
             text-decoration: none;
-            font-weight: bold;
-            margin: 0 1rem;
-            transition: color 0.3s ease;
-        }
-        nav a:hover {
-            color: var(--accent-color);
-        }
-        .container {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
-            height: calc(100vh - 150px); /* Subtrai o tamanho do header e do nav */
-            text-align: center;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
         }
-        .menu-option {
-            margin: 1rem 0;
+        .nav-item a:hover {
+            background-color: rgba(255,255,255,0.1);
         }
-        .menu-option a {
+        .nav-item i {
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+        .main-content {
+            flex-grow: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+        .header {
+            margin-bottom: 2rem;
+        }
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+        }
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        .card h2 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+        .btn {
             display: inline-block;
-            padding: 1rem 2rem;
-            background: var(--secondary-color);
+            padding: 0.75rem 1.5rem;
+            background-color: var(--secondary-color);
             color: white;
             text-decoration: none;
             border-radius: 8px;
-            font-weight: bold;
-            font-size: 1.2rem;
-            transition: background 0.3s ease;
+            transition: all 0.3s ease;
+            font-weight: 600;
         }
-        .menu-option a:hover {
-            background: var(--accent-color);
+        .btn:hover {
+            background-color: var(--accent-color);
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>DataFlow - Menu Principal</h1>
-    </header>
-    <nav>
-        <a href="/upload">Carregar Arquivo</a>
-        <a href="/analisar">Análise de Dados</a>
-        <a href="/treinar">Treinamento</a>
-    </nav>
-    <div class="container">
-        <div class="menu-option">
-            <a href="/upload">Carregar Arquivo</a>
-        </div>
-        <div class="menu-option">
-            <a href="/analisar">Análise de Dados</a>
-        </div>
-        <div class="menu-option">
-            <a href="/treinar">Treinamento de Modelo</a>
-        </div>
+    <div class="dashboard">
+        <aside class="sidebar">
+            <div class="logo">DataFlow</div>
+            <nav>
+                <div class="nav-item">
+                    <a href="/upload"><i class="fas fa-upload"></i> Carregar Arquivo</a>
+                </div>
+                <div class="nav-item">
+                    <a href="/analisar"><i class="fas fa-chart-bar"></i> Análise de Dados</a>
+                </div>
+                <div class="nav-item">
+                    <a href="/treinar"><i class="fas fa-brain"></i> Treinamento</a>
+                </div>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <header class="header">
+                <h1>Bem-vindo ao DataFlow</h1>
+            </header>
+            <div class="card-container">
+                <div class="card">
+                    <i class="fas fa-upload card-icon"></i>
+                    <h2>Carregar Arquivo</h2>
+                    <p>Faça upload de seus dados para análise.</p>
+                    <a href="/upload" class="btn">Carregar</a>
+                </div>
+                <div class="card">
+                    <i class="fas fa-chart-bar card-icon"></i>
+                    <h2>Análise de Dados</h2>
+                    <p>Visualize e analise seus dados carregados.</p>
+                    <a href="/analisar" class="btn">Analisar</a>
+                </div>
+                <div class="card">
+                    <i class="fas fa-brain card-icon"></i>
+                    <h2>Treinamento de Modelo</h2>
+                    <p>Treine modelos de machine learning com seus dados.</p>
+                    <a href="/treinar" class="btn">Treinar</a>
+                </div>
+            </div>
+        </main>
     </div>
 </body>
 </html>
