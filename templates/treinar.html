@@ -144,9 +144,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Tempo de Tela Ligada (horas/dia)</td>
+                    <td>Idade</td>
                     <td>
-                        <input type="number" step="0.1" name="screen_time" min="0" oninput="validateInput(event)" required>
+                        <input type="number" step="0.1" name="age" min="0" oninput="validateInput(event)" required>
                     </td>
                 </tr>
                 <tr>
@@ -164,6 +164,9 @@
             </table>
             <button type="submit">Iniciar Treinamento</button>
         </form>
+        {% if previsao %}
+            <h3>Previsão: {{ previsao }}</h3>
+        {% endif %}
     </div>
 </body>
 </html>

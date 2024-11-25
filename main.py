@@ -40,6 +40,10 @@ def upload():
     if arquivo.filename == '':
         return redirect(url_for('upload'))
 
+
+    if not arquivo.filename.endswith('.csv'):
+        flash('Por favor, faça o upload de um arquivo CSV.', 'error')
+        return redirect(url_for('upload'))
     if arquivo:
         try:
             path_arquivo = os.path.join(app.config['UPLOAD_FOLDER'], arquivo.filename)
@@ -66,10 +70,9 @@ def treinar_route():
     if request.method == 'POST':
         modelo_dispositivo = request.form['modelo_dispositivo']
         usoDeApps = int(request.form['app_usage'])
-        tempoDeTela = float(request.form['screen_time'])
         num_apps = int(request.form['num_apps'])
         usoDeDados = int(request.form['data_usage'])
-        idade = int(request.form['idade'])
+        idade = int(request.form['age'])
 
         path_arquivo = session['csv_path']
         processador_CSV = ProcessarCSV(path_arquivo)
@@ -78,45 +81,20 @@ def treinar_route():
         modelo = ModeloML(df)
         modelo.treinar_modelo(df, df['Screen On Time (hours/day)'])
 
+        # Prepare data for prediction
+        dados = {
+            'Device Model': [modelo_dispositivo],
+            'App Usage Time (min/day)': [usoDeApps],
+            'Number of Apps Installed': [num_apps],
+            'Data Usage (MB/day)': [usoDeDados],
+            'Age': [idade]
+        }
+        df_previsao = pd.DataFrame(dados)
+
+        previsao = modelo.prever_modelo(df_previsao)
+
         flash('Modelo treinado com sucesso!', 'success')
-
-@app.route("/prever", methods=['GET', 'POST'])
-def prever():
-    if request.method == 'GET':
-        return render_template('prever.html')
-
-    if 'csv_path' not in session:
-        return redirect(url_for('menu'))
-
-    modelo = request.form['modelo']
-    sistema_operacional = request.form['sistema_operacional']
-    tempo_app = int(request.form['uso_app'])
-    tempo_tela = int(request.form['tempo_tela'])
-    drenagem_bateria = int(request.form['drenagem_bateria'])
-    num_apps = int(request.form['num_apps'])
-    dados_usados = int(request.form['dados_usados'])
-    idade = int(request.form['idade'])
-    genero = request.form['genero']
-
-    dados = {
-        'Device Model': [modelo],
-        'Operating System': [sistema_operacional],
-        'App usage(min/day)': [tempo_app],
-        'Screen On Time (/day)': [tempo_tela],
-        'Battery Drain (mAh/day)': [drenagem_bateria],
-        'Number of Apps Installed': [num_apps],
-        'Data Usage (MB/day)': [dados_usados],
-        'Age': [idade],
-        'Gender': [genero]
-    }
-
-    df = pd.DataFrame(dados)
-
-    modelo_ml = ModeloML(df)
-    previsao = modelo_ml.prever_modelo(df)
-
-    return render_template('treinar.html', previsao=previsao)
-
+        return render_template('treinar.html', previsao=previsao[0])
 @app.route('/static/<path:filename>')
 def serve_static(filename):
     return send_from_directory('static', filename)
