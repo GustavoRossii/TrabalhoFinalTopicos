@@ -3,75 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Análise de Dados</title>
+    <title>DataFlow - Análise de Dados</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
-            --primary-color: #3a4750;
-            --secondary-color: #00a8cc;
-            --accent-color: #ff6b6b;
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --accent-color: #e74c3c;
             --background-color: #f4f4f4;
-            --text-color: #333333;
+            --text-color: #333;
         }
+
         body, html {
             margin: 0;
             padding: 0;
             font-family: 'Inter', sans-serif;
             background-color: var(--background-color);
             color: var(--text-color);
+            line-height: 1.6;
         }
-        header, nav {
+
+        header {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+
+        .nav-links a:hover {
             background-color: var(--primary-color);
             color: white;
-            padding: 1rem;
-            text-align: center;
         }
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 1rem;
-        }
-        nav a:hover {
-            color: var(--accent-color);
-        }
+
         .container {
-            max-width: 800px;
-            margin: 2rem auto;
+            max-width: 1000px;
+            margin: 100px auto 2rem;
             background: white;
             padding: 2rem;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            color: var(--primary-color);
             text-align: center;
         }
+
+        .analysis-intro {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .generate-btn {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .generate-btn:hover {
+            background-color: #27ae60;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .charts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .chart-item {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .chart-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .chart-item h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
         img {
             width: 100%;
-            max-width: 600px;
-            margin: 1rem 0;
-            border-radius: 10px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .chart-description {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .no-charts {
+            text-align: center;
+            color: #666;
+            font-style: italic;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Análise de Dados</h1>
+        <nav>
+            <a href="/" class="logo">DataFlow</a>
+            <div class="nav-links">
+                <a href="/menu">Menu</a>
+                <a href="/upload">Carregar Arquivo</a>
+                <a href="/analisar">Análise de Dados</a>
+                <a href="/treinar">Treinamento</a>
+            </div>
+        </nav>
     </header>
-    <nav>
-        <a href="/menu">Menu</a>
-        <a href="/upload">Carregar Arquivo</a>
-        <a href="/treinar">Treinamento de Modelo</a>
-    </nav>
+
     <div class="container">
-        <h2>Visualização dos Gráficos</h2>
-        <p>Veja abaixo os gráficos gerados a partir dos dados analisados:</p>
-        <form method="POST" action="/analisar">
-            <button type="submit">Gerar Gráficos</button>
-        </form>
+        <h1>Análise de Dados</h1>
+
+        <div class="analysis-intro">
+            <p>Explore insights visuais gerados a partir dos seus dados. Clique no botão abaixo para gerar ou atualizar os gráficos.</p>
+            <form method="POST" action="/analisar">
+                <button type="submit" class="generate-btn">
+                    <i class="fas fa-chart-bar"></i> Gerar Gráficos
+                </button>
+            </form>
+        </div>
+
         {% if path_figures %}
-            {% for path_figure in path_figures %}
-                <img src="{{ url_for('static', filename=path_figure) }}" alt="Gráfico de Análise">
-            {% endfor %}
+            <div class="charts-container">
+                {% for path_figure in path_figures %}
+                    <div class="chart-item">
+                        <h3>Gráfico de Análise {{ loop.index }}</h3>
+                        <img src="{{ url_for('static', filename=path_figure) }}" alt="Gráfico de Análise {{ loop.index }}">
+                        <p class="chart-description">Este gráfico apresenta uma análise detalhada dos dados fornecidos.</p>
+                    </div>
+                {% endfor %}
+            </div>
         {% else %}
-            <p>Não há gráficos para exibir.</p>
+            <p class="no-charts">Não há gráficos para exibir. Clique em "Gerar Gráficos" para começar a análise.</p>
         {% endif %}
     </div>
 </body>
