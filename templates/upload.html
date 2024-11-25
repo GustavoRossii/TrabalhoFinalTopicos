@@ -3,88 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carregar Arquivo</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>DataFlow - Carregar Arquivo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* CSS geral compartilhado */
         :root {
-            --primary-color: #3a4750;
-            --secondary-color: #00a8cc;
-            --accent-color: #ff6b6b;
-            --background-color: #f4f4f4;
-            --text-color: #333333;
+            --primary-color: #1a73e8;
+            --secondary-color: #34a853;
+            --accent-color: #ea4335;
+            --background-color: #f5f5f5;
+            --text-color: #202124;
         }
         body, html {
             margin: 0;
             padding: 0;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Roboto', sans-serif;
             background-color: var(--background-color);
             color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
-        header, nav {
+        header {
             background-color: var(--primary-color);
             color: white;
             padding: 1rem;
             text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        nav {
+            background-color: #ffffff;
+            padding: 0.5rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         nav a {
-            color: white;
+            color: var(--primary-color);
             text-decoration: none;
             margin: 0 1rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
         }
         nav a:hover {
             color: var(--accent-color);
         }
         .container {
-            max-width: 800px;
-            margin: 2rem auto;
-            background: white;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            text-align: center;
         }
         .file-upload-wrapper {
             margin: 2rem 0;
+            text-align: center;
         }
         .file-upload-input {
-            width: 100%;
-            padding: 1rem;
-            border: 2px solid var(--secondary-color);
-            border-radius: 5px;
+            display: none;
+        }
+        .file-upload-label {
+            display: inline-block;
+            padding: 12px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .file-upload-label:hover {
+            background-color: #1765cc;
+        }
+        .file-upload-label i {
+            margin-right: 8px;
+        }
+        #file-name {
+            margin-top: 1rem;
+            font-style: italic;
+            text-align: center;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 2rem;
         }
         button {
             background-color: var(--secondary-color);
             color: white;
             border: none;
-            padding: 1rem 2rem;
-            border-radius: 5px;
+            padding: 12px 24px;
+            border-radius: 4px;
             cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
         }
         button:hover {
-            background-color: var(--accent-color);
+            background-color: #2d9249;
+        }
+        .message {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 4px;
+            background-color: #e8f0fe;
+            color: var(--primary-color);
+            text-align: center;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Carregar Arquivo CSV</h1>
+        <h1>DataFlow</h1>
     </header>
     <nav>
-        <a href="/menu">Menu</a>
-        <a href="/analisar">Análise de Dados</a>
-        <a href="/treinar">Treinamento de Modelo</a>
+        <a href="/menu"><i class="fas fa-home"></i> Menu</a>
+        <a href="/analisar"><i class="fas fa-chart-bar"></i> Análise de Dados</a>
+        <a href="/treinar"><i class="fas fa-brain"></i> Treinamento de Modelo</a>
     </nav>
     <div class="container">
-        <h2>Faça o upload do seu arquivo CSV</h2>
+        <h2>Carregar Arquivo CSV</h2>
         <form method="POST" action="/upload" enctype="multipart/form-data">
             <div class="file-upload-wrapper">
-                <input type="file" name="arquivoCSV" class="file-upload-input" accept=".csv" required>
+                <input type="file" name="arquivoCSV" id="file-upload" class="file-upload-input" accept=".csv" required>
+                <label for="file-upload" class="file-upload-label">
+                    <i class="fas fa-cloud-upload-alt"></i> Escolher arquivo
+                </label>
+                <div id="file-name"></div>
             </div>
-            <button type="submit">Enviar Arquivo</button>
+            <div class="button-container">
+                <button type="submit"><i class="fas fa-upload"></i> Enviar Arquivo</button>
+            </div>
         </form>
         {% if message %}
-            <p>{{ message }}</p>
+            <div class="message">{{ message }}</div>
         {% endif %}
     </div>
+
+    <script>
+        document.getElementById('file-upload').addEventListener('change', function(e) {
+            var fileName = e.target.files[0].name;
+            document.getElementById('file-name').textContent = 'Arquivo selecionado: ' + fileName;
+        });
+    </script>
 </body>
 </html>
