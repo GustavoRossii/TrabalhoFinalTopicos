@@ -22,7 +22,7 @@ class AnalisarDados:
             # Gerar primeiro gráfico
             print("Iniciando a geração do gráfico 1...")
             sns.swarmplot(x='Operating System', y='Battery Drain (mAh/day)', data=self.df)
-            plt.title("Drenagem de bateria x Sistema operacional ")
+            plt.title("Drenagem de bateria x Sistema operacional")
             plt.xlabel("Sistema operacional")
             plt.ylabel("Drenagem de bateria (mAh/dia)")
             file_path1 = os.path.join(static_dir, 'grafico1.png')
