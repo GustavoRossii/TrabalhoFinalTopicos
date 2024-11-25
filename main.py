@@ -2,7 +2,7 @@ import pandas as pd
 from processar_csv import ProcessarCSV
 from treinar_modelo import ModeloML
 from analise_dados import AnalisarDados
-from flask import Flask, render_template, request, url_for, redirect, session, send_from_directory
+from flask import Flask, render_template, request, url_for, redirect, session, send_from_directory, flash
 import os
 
 app = Flask(__name__)
@@ -12,9 +12,16 @@ app.config['UPLOAD_FOLDER'] = 'uploads'
 if not os.path.exists(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
 
+def csv_exists():
+    return 'csv_path' in session and os.path.exists(session['csv_path'])
+
+def handle_missing_csv():
+    flash('Por favor, faça o upload do arquivo CSV antes de acessar a página de treinamento.', 'warning')
+    return redirect(url_for('upload'))
+
 @app.route('/menu')
 def menu():
-    return render_template('menu.html')
+    return render_template('menu.html', csv_exists=csv_exists())
 
 @app.route('/')
 def index():
@@ -42,12 +49,20 @@ def upload():
             df = processador_CSV.ler_csv()
             session['csv_path'] = path_arquivo
 
+            flash('Arquivo CSV carregado com sucesso!', 'success')
             return render_template('upload.html', df=df, message='Arquivo processado com sucesso!')
         except Exception as e:
+            flash(f'Erro ao processar arquivo: {e}', 'error')
             return render_template('upload.html', message='Erro ao processar arquivo: {}'.format(e))
 
-@app.route('/treinar', methods=['GET'])
+@app.route('/treinar', methods=['GET', 'POST'])
 def treinar_route():
+    if not csv_exists():
+        return handle_missing_csv()
+
+    if request.method == 'GET':
+        return render_template('treinar.html')
+
     path_arquivo = session['csv_path']
     processador_CSV = ProcessarCSV(path_arquivo)
     df = processador_CSV.ler_csv()
@@ -55,7 +70,8 @@ def treinar_route():
     modelo = ModeloML(df)
     modelo.treinar_modelo(df, df['Screen On Time (hours/day)'])
 
-    return 'Modelo treinado com sucesso!'
+    flash('Modelo treinado com sucesso!', 'success')
+    return render_template('treinar.html', message='Modelo treinado com sucesso!')
 
 @app.route("/prever", methods=['GET', 'POST'])
 def prever():
@@ -68,7 +84,7 @@ def prever():
     modelo = request.form['modelo']
     sistema_operacional = request.form['sistema_operacional']
     tempo_app = int(request.form['uso_app'])
-    tempo_tela = float(request.form['tempo_tela'])
+    tempo_tela = int(request.form['tempo_tela'])
     drenagem_bateria = int(request.form['drenagem_bateria'])
     num_apps = int(request.form['num_apps'])
     dados_usados = int(request.form['dados_usados'])
