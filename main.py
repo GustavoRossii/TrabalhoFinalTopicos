@@ -63,15 +63,22 @@ def treinar_route():
     if request.method == 'GET':
         return render_template('treinar.html')
 
-    path_arquivo = session['csv_path']
-    processador_CSV = ProcessarCSV(path_arquivo)
-    df = processador_CSV.ler_csv()
+    if request.method == 'POST':
+        modelo_dispositivo = request.form['modelo_dispositivo']
+        usoDeApps = int(request.form['app_usage'])
+        tempoDeTela = float(request.form['screen_time'])
+        num_apps = int(request.form['num_apps'])
+        usoDeDados = int(request.form['data_usage'])
+        idade = int(request.form['idade'])
 
-    modelo = ModeloML(df)
-    modelo.treinar_modelo(df, df['Screen On Time (hours/day)'])
+        path_arquivo = session['csv_path']
+        processador_CSV = ProcessarCSV(path_arquivo)
+        df = processador_CSV.ler_csv()
 
-    flash('Modelo treinado com sucesso!', 'success')
-    return render_template('treinar.html', message='Modelo treinado com sucesso!')
+        modelo = ModeloML(df)
+        modelo.treinar_modelo(df, df['Screen On Time (hours/day)'])
+
+        flash('Modelo treinado com sucesso!', 'success')
 
 @app.route("/prever", methods=['GET', 'POST'])
 def prever():
