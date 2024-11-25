@@ -100,7 +100,7 @@ def prever():
         'Number of Apps Installed': [num_apps],
         'Data Usage (MB/day)': [dados_usados],
         'Age': [idade],
-        'Gender' : [genero]
+        'Gender': [genero]
     }
 
     df = pd.DataFrame(dados)
@@ -116,27 +116,21 @@ def serve_static(filename):
 
 @app.route("/analisar", methods=['GET', 'POST'])
 def analisar():
-    print("Rota /analisar chamada")
     if request.method == 'GET':
-        print("Método GET")
         return render_template('analise.html')
 
     if request.method == 'POST':
-        print("Método POST")
         if 'csv_path' not in session:
-            print("csv_path não encontrado na sessão")
             return redirect(url_for('menu'))
 
         path_arquivo = session['csv_path']
-        print(f"Path do arquivo CSV: {path_arquivo}")
         processador_CSV = ProcessarCSV(path_arquivo)
         df = processador_CSV.ler_csv()
-        print("DataFrame carregado:\n", df.head())
 
         analisador = AnalisarDados(df)
         path_figures = analisador.plotar_graficos()
-        print(f"Paths dos gráficos: {path_figures}")
 
+        # Não adicione gráficos manualmente aqui.
         return render_template('analise.html', path_figures=path_figures)
 
 if __name__ == '__main__':

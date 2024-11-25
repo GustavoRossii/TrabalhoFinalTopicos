@@ -181,6 +181,12 @@
                         <img src="{{ url_for('static', filename=path_figure) }}" alt="Gráfico de Análise {{ loop.index }}">
                         <p class="chart-description">Este gráfico apresenta uma análise detalhada dos dados fornecidos.</p>
                     </div>
+                    <div class="chart-item">
+                        <h3>Gráfico de Uso de Aplicativos x Modelo de Dispositivo {{ loop.index }}</h3>
+                        <img src="{{ url_for('static', filename='graficos/grafico4.png') }}" alt="Gráfico de Uso de Aplicativos x Modelo de Dispositivo {{ loop.index }}">
+                        <p class="chart-description">Este gráfico mostra a relação entre o uso de aplicativos e os modelos de dispositivos.</p>
+                    </div>
+
                 {% endfor %}
             </div>
         {% else %}
