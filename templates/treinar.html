@@ -138,15 +138,23 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>Sistema Operacional</td>
+                    <td>
+                        <select name="sistema_operacional" required>
+                            <option value="android">Android</option>
+                            <option value="ios">iOS</option>
+                        </select>
+                </tr>
+                <tr>
                     <td>Tempo de Uso do App (min/dia)</td>
                     <td>
-                        <input type="number" name="app_usage" min="0" oninput="validateInput(event)" required>
+                        <input type="number" name="uso_apps" min="0" oninput="validateInput(event)" required>
                     </td>
                 </tr>
                 <tr>
-                    <td>Idade</td>
+                    <td>Drenagem de bateria (mAh/day)</td>
                     <td>
-                        <input type="number" step="0.1" name="age" min="0" oninput="validateInput(event)" required>
+                        <input type="number" name="drenagem_bateria" min="0" oninput="validateInput(event)" required>
                     </td>
                 </tr>
                 <tr>
@@ -158,14 +166,30 @@
                 <tr>
                     <td>Uso de Dados (MB/dia)</td>
                     <td>
-                        <input type="number" name="data_usage" min="0" oninput="validateInput(event)" required>
+                        <input type="number" name="uso_dados" min="0" oninput="validateInput(event)" required>
                     </td>
                 </tr>
+                <tr>
+                    <td>Idade</td>
+                    <td>
+                        <input type="number" step="0.1" name="idade" min="0" oninput="validateInput(event)" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Genero</td>
+                    <td>
+                        <select name="genero" required>
+                        <option value="masculino">Masculino</option>
+                        <option value="feminino">Feminino</option>
+                    </select>
+                    </td>
+                </tr>
+
             </table>
             <button type="submit">Iniciar Treinamento</button>
         </form>
         {% if previsao %}
-            <h3>Previsão: {{ previsao }}</h3>
+            <h3>Previsão: {{ previsao }} (hrs / dia)</h3>
         {% endif %}
     </div>
 </body>

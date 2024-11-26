@@ -8,7 +8,7 @@ class AnalisarDados:
 
     def plotar_graficos(self):
         try:
-            # Check if DataFrame is loaded correctly
+            # Verifica se o DataFrame foi carregado corretamente
             print("DataFrame head:\n", self.df.head())
 
             # Diretório para salvar os gráficos

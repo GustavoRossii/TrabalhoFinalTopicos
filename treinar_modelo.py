@@ -1,5 +1,3 @@
-import pandas as pd
-import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import LabelEncoder
@@ -59,4 +57,4 @@ class treinar_modelo:
         # Fazer a previsão
         previsao = self.modelo.predict(x)
 
-        return previsao.round(2)  # Arredondar para 2 casas decimais
+        return previsao.round(2)
