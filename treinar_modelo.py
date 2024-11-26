@@ -5,7 +5,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import LabelEncoder
 import joblib
 
-class ModeloML:
+class treinar_modelo:
     def __init__(self, df):
         self.modelo = None
         self.df = df
@@ -53,7 +53,8 @@ class ModeloML:
         # Aplicar Label Encoding nas colunas categóricas
         for col, le in self.label_encoders.items():
             if col in x.columns:
-                x[col] = le.transform(x[col])
+                # Handle unseen labels
+                x[col] = x[col].apply(lambda val: le.transform([val])[0] if val in le.classes_ else -1)
 
         # Fazer a previsão
         previsao = self.modelo.predict(x)

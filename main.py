@@ -1,6 +1,6 @@
 import pandas as pd
 from processar_csv import ProcessarCSV
-from treinar_modelo import ModeloML
+from treinar_modelo import treinar_modelo
 from analise_dados import AnalisarDados
 from flask import Flask, render_template, request, url_for, redirect, session, send_from_directory, flash
 import os
@@ -40,10 +40,10 @@ def upload():
     if arquivo.filename == '':
         return redirect(url_for('upload'))
 
-
     if not arquivo.filename.endswith('.csv'):
         flash('Por favor, faça o upload de um arquivo CSV.', 'error')
         return redirect(url_for('upload'))
+
     if arquivo:
         try:
             path_arquivo = os.path.join(app.config['UPLOAD_FOLDER'], arquivo.filename)
@@ -78,7 +78,7 @@ def treinar_route():
         processador_CSV = ProcessarCSV(path_arquivo)
         df = processador_CSV.ler_csv()
 
-        modelo = ModeloML(df)
+        modelo = treinar_modelo(df)
         modelo.treinar_modelo(df, df['Screen On Time (hours/day)'])
 
         # Prepare data for prediction
@@ -95,6 +95,7 @@ def treinar_route():
 
         flash('Modelo treinado com sucesso!', 'success')
         return render_template('treinar.html', previsao=previsao[0])
+
 @app.route('/static/<path:filename>')
 def serve_static(filename):
     return send_from_directory('static', filename)
@@ -115,7 +116,6 @@ def analisar():
         analisador = AnalisarDados(df)
         path_figures = analisador.plotar_graficos()
 
-        # Não adicione gráficos manualmente aqui.
         return render_template('analise.html', path_figures=path_figures)
 
 if __name__ == '__main__':
