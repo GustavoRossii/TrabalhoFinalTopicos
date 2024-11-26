@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DataFlow - Menu Principal</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16x16.png') }}">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -14,35 +15,78 @@
             --background-color: #ecf0f1;
             --text-color: #34495e;
             --card-bg: #ffffff;
+
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --info-color: #3498db;
+            --danger-color: #e74c3c;
+
+            /* Dark Mode Variables */
+            --dark-primary-color: #1a1a2e;
+            --dark-secondary-color: #16213e;
+            --dark-text-color: #e9e9e9;
         }
-        body, html {
+
+        *, *::before, *::after {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        body, html {
             font-family: 'Montserrat', sans-serif;
             background-color: var(--background-color);
             color: var(--text-color);
-            height: 100%;
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            scroll-behavior: smooth;
         }
+
         .dashboard {
             display: flex;
-            height: 100vh;
+            min-height: 100vh;
+            transition: all 0.3s ease;
         }
+
         .sidebar {
             width: 250px;
             background-color: var(--primary-color);
             color: white;
             padding: 2rem;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
         }
+
         .logo {
             font-size: 2rem;
             font-weight: 700;
             margin-bottom: 2rem;
             text-align: center;
+            color: var(--secondary-color);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
+
         .nav-item {
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
         }
+
         .nav-item a {
             color: white;
             text-decoration: none;
@@ -51,51 +95,106 @@
             padding: 0.75rem 1rem;
             border-radius: 8px;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
+
+        .nav-item a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--secondary-color);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-item a:hover::before {
+            transform: scaleX(1);
+        }
+
         .nav-item a:hover {
             background-color: rgba(255,255,255,0.1);
+            transform: translateX(10px);
         }
+
         .nav-item i {
             margin-right: 1rem;
             font-size: 1.2rem;
+            transition: transform 0.3s ease;
         }
+
+        .nav-item a:hover i {
+            transform: rotate(360deg);
+        }
+
         .main-content {
             flex-grow: 1;
             padding: 2rem;
             overflow-y: auto;
+            background: linear-gradient(135deg, var(--background-color) 0%, #f7f9fa 100%);
         }
+
         .header {
             margin-bottom: 2rem;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 1rem;
         }
+
         .header h1 {
-            font-size: 2rem;
-            font-weight: 600;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
         }
+
+        /* Cards */
         .card-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 2rem;
         }
+
         .card {
             background-color: var(--card-bg);
-            border-radius: 12px;
+            border-radius: 15px;
             padding: 1.5rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transition: all 0.4s ease;
+            border: 1px solid transparent;
+            animation: fadeIn 0.6s ease-out;
         }
+
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            border-color: var(--secondary-color);
         }
-        .card h2 {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-        }
+
         .card-icon {
             font-size: 3rem;
             margin-bottom: 1rem;
             color: var(--secondary-color);
+            transition: transform 0.3s ease;
         }
+
+        .card:hover .card-icon {
+            animation: pulse 1s infinite;
+        }
+
+        .card h2 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .card p {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
         .btn {
             display: inline-block;
             padding: 0.75rem 1.5rem;
@@ -105,9 +204,48 @@
             border-radius: 8px;
             transition: all 0.3s ease;
             font-weight: 600;
+            position: relative;
+            overflow: hidden;
         }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: all 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
         .btn:hover {
             background-color: var(--accent-color);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+            .card-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .nav-item a:focus,
+        .btn:focus {
+            outline: 3px solid var(--secondary-color);
+            outline-offset: 2px;
         }
     </style>
 </head>
@@ -117,13 +255,19 @@
             <div class="logo">DataFlow</div>
             <nav>
                 <div class="nav-item">
-                    <a href="/upload"><i class="fas fa-upload"></i> Carregar Arquivo</a>
+                    <a href="/upload" aria-label="Carregar Arquivo">
+                        <i class="fas fa-upload"></i> Carregar Arquivo
+                    </a>
                 </div>
                 <div class="nav-item">
-                    <a href="/analisar"><i class="fas fa-chart-bar"></i> Análise de Dados</a>
+                    <a href="/analisar" aria-label="Análise de Dados">
+                        <i class="fas fa-chart-bar"></i> Análise de Dados
+                    </a>
                 </div>
                 <div class="nav-item">
-                    <a href="/treinar"><i class="fas fa-brain"></i> Treinamento</a>
+                    <a href="/treinar" aria-label="Treinamento de Modelo">
+                        <i class="fas fa-brain"></i> Treinamento
+                    </a>
                 </div>
             </nav>
         </aside>
@@ -135,19 +279,19 @@
                 <div class="card">
                     <i class="fas fa-upload card-icon"></i>
                     <h2>Carregar Arquivo</h2>
-                    <p>Faça upload de seus dados para análise.</p>
+                    <p>Faça upload de seus dados para análise com segurança e facilidade.</p>
                     <a href="/upload" class="btn">Carregar</a>
                 </div>
                 <div class="card">
                     <i class="fas fa-chart-bar card-icon"></i>
                     <h2>Análise de Dados</h2>
-                    <p>Visualize e analise seus dados carregados.</p>
+                    <p>Visualize e analise seus dados carregados com ferramentas avançadas.</p>
                     <a href="/analisar" class="btn">Analisar</a>
                 </div>
                 <div class="card">
                     <i class="fas fa-brain card-icon"></i>
                     <h2>Treinamento de Modelo</h2>
-                    <p>Treine modelos de machine learning com seus dados.</p>
+                    <p>Treine modelos de machine learning de forma intuitiva e eficiente.</p>
                     <a href="/treinar" class="btn">Treinar</a>
                 </div>
             </div>
