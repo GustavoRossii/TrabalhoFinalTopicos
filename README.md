@@ -1,4 +1,3 @@
-# TrabalhoFinalTopicos
 # Aplicação Web de Machine Learning para Análise de Dados CSV
 
 ## Descrição do Projeto
